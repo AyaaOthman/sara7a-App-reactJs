@@ -40,12 +40,8 @@ function App() {
           ),
         },
         {
-          path: "message",
-          element: (
-            <ProtectedRoute>
-              <SendMessage />
-            </ProtectedRoute>
-          ),
+          path: "message/:userId",
+          element: <SendMessage />,
         },
         {
           path: "*",
