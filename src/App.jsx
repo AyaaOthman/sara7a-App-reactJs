@@ -6,7 +6,18 @@ import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
 import NotFound from "./Components/NotFound/NotFound";
 import Profile from "./Components/Profile/Profile";
+import SendMessage from "./Components/SendMessage/SendMessage";
+import { useContext, useEffect } from "react";
+import { tokenContext } from "./Context/tokenContext";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+
 function App() {
+  let { setToken } = useContext(tokenContext);
+  useEffect(() => {
+    if (localStorage.getItem("userToken")) {
+      setToken(localStorage.getItem("userToken"));
+    }
+  });
   const routes = createBrowserRouter([
     {
       path: "",
@@ -22,7 +33,19 @@ function App() {
         },
         {
           path: "profile",
-          element: <Profile />,
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "message",
+          element: (
+            <ProtectedRoute>
+              <SendMessage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "*",
