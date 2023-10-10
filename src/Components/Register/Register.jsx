@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Register.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function Register() {
-  // const validate = (values) => {
-  //   let errors = {};
-  //   if (!values.name) {
-  //     errors.name = "name is required";
-  //   } else if (values.name.length < 3) {
-  //     errors.name = "name must be more than threee char";
-  //   }
-  //   return errors;
-  // };
-  async function register(values) {
-    let { data } = await axios.post(
-      `https://sara7aiti.onrender.com/api/v1/user
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+  let navigate = useNavigate();
+  function register(values) {
+    setIsLoading(true);
+    let { data } = axios
+      .post(
+        `https://sara7aiti.onrender.com/api/v1/user
     `,
-      values
-    );
-    console.log(data);
+        values
+      )
+      .then((data) => {
+        if (data.data.message == "Added") {
+          setIsLoading(false);
+        }
+        navigate("/login");
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setApiError(err.response.data.error);
+      });
   }
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -36,11 +42,8 @@ export default function Register() {
       ),
     rePassword: Yup.string()
       .required("password is required")
-      .matches(
-        /^[a-zA-Z0-9]{3,8}/,
-        "password must be small and capital letters and contains at least 1 number"
-      ),
-    age: Yup.number().min(10, "min age is 10").positive().integer().required(),
+      .oneOf([Yup.ref("password")], "rePassword doesn't match password"),
+    age: Yup.number().positive().integer().required("age is required"),
   });
 
   let formik = useFormik({
@@ -60,6 +63,11 @@ export default function Register() {
         <div className="user text-center my-3">
           <i className="far fa-edit user-icon" />
           <h4 className="login ">Register</h4>
+          {apiError ? (
+            <div className="alert alert-danger w-50 m-auto">{apiError}!</div>
+          ) : (
+            ""
+          )}
         </div>
         <div className="card p-5 w-50 m-auto">
           <form method="POST" onSubmit={formik.handleSubmit}>
@@ -170,7 +178,11 @@ export default function Register() {
             </div>
 
             <button type="submit" className="btn btn-dark my-4 w-100 rounded">
-              Register
+              {isLoading ? (
+                <i className="fa fa-spin fa-spinner"></i>
+              ) : (
+                <span>Register</span>
+              )}
             </button>
           </form>
         </div>
