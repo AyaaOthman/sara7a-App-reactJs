@@ -6,17 +6,17 @@ import { useFormik } from "formik";
 import axios from "axios";
 
 export default function SendMessage() {
-  let userId = useParams();
+  const { userId } = useParams();
+
   async function addMessage(values) {
-    // let data = {
-    //   ...values,
-    //   receivedId: userId,
-    // };
-    // // let { addedMessages } = await axios.post(
-    // //   "https://sara7aiti.onrender.com/api/v1/message",
-    // //   data
-    // // );
-    // console.log(addedMessages);
+    let data = {
+      ...values,
+      receivedId: userId,
+    };
+    let { addedMessages } = await axios.post(
+      "https://sara7aiti.onrender.com/api/v1/message",
+      data
+    );
   }
   let formik = useFormik({
     initialValues: {

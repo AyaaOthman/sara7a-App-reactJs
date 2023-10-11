@@ -10,8 +10,11 @@ import SendMessage from "./Components/SendMessage/SendMessage";
 import { useContext, useEffect } from "react";
 import { tokenContext } from "./Context/tokenContext";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
+  let queryClient = new QueryClient();
+
   let { setToken } = useContext(tokenContext);
   useEffect(() => {
     if (localStorage.getItem("userToken")) {
@@ -35,7 +38,9 @@ function App() {
           path: "profile",
           element: (
             <ProtectedRoute>
-              <Profile />
+              <QueryClientProvider client={queryClient}>
+                <Profile />
+              </QueryClientProvider>
             </ProtectedRoute>
           ),
         },
