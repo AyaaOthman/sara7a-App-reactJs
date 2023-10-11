@@ -7,9 +7,12 @@ import jwtDecode from "jwt-decode";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { CounterContext } from "../../Context/counter";
 
 export default function Profile() {
   let { token } = useContext(tokenContext);
+  const { updateCounter } = useContext(CounterContext);
+
   const [allAddedMsgs, setAllMessages] = useState([]);
   const [userName, setUserName] = useState();
   const [userId, setUserId] = useState();
@@ -23,6 +26,7 @@ export default function Profile() {
       .then((data) => {
         console.log(data.data);
         setAllMessages(data.data.allMessages);
+        updateCounter(data.data.allMessages.length);
       })
   );
   function getUserId() {
@@ -68,12 +72,16 @@ export default function Profile() {
     <>
       <div>
         <div className="container text-center py-5 my-5 text-center">
-          <div className="card py-5 mb-5">
-            <a href data-toggle="modal" data-target="#profile">
-              <img src={avatarImg} className="avatar " alt />
+          <div className="card py-5 mb-5 d-flex justify-content-center align-items-center">
+            <a data-toggle="modal" data-target="#profile">
+              <img src={avatarImg} className="avatar " />
             </a>
             <h3 className="py-2">{userName}</h3>
-            <Button variant="primary" onClick={handleShow}>
+            <Button
+              className="w-25 text-center"
+              variant="primary"
+              onClick={handleShow}
+            >
               <i className="fas fa-share-alt" /> Share Profile
             </Button>
           </div>
@@ -100,13 +108,11 @@ export default function Profile() {
               </div>
             ) : (
               <>
-                {allAddedMsgs.map((msg) => {
-                  return (
-                    <div className="card py-5 mb-5 shadow">
-                      {msg.messageContent}
-                    </div>
-                  );
-                })}
+                {allAddedMsgs.map((msg) => (
+                  <div className="card py-5 mb-5 shadow" key={msg._id}>
+                    {msg.messageContent}
+                  </div>
+                ))}
               </>
             )}
           </div>

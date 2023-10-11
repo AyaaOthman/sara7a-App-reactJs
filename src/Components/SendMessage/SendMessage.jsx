@@ -30,8 +30,8 @@ export default function SendMessage() {
     <>
       <div className="container text-center py-5 my-5 text-center">
         <div className="card py-5 mb-5">
-          <a href data-toggle="modal" data-target="#profile">
-            <img src={avatarImg} className="avatar " alt />
+          <a data-toggle="modal" data-target="#profile">
+            <img src={avatarImg} className="avatar " />
           </a>
           <div className="container w-50 m-auto">
             <form onSubmit={formik.handleSubmit}>

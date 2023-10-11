@@ -3,22 +3,24 @@ import styles from "./Navbar.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { CounterContext } from "../../Context/counter";
 import { tokenContext } from "../../Context/tokenContext";
+import logo from "../../img/logo300.png";
 
 export default function Navbar() {
-  let msgsCount = useContext(CounterContext);
-  let { token, setToken } = useContext(tokenContext);
-  let navigate = useNavigate();
+  const { counter } = useContext(CounterContext);
+  const { token, setToken } = useContext(tokenContext);
+  const navigate = useNavigate();
   function logout() {
     localStorage.removeItem("userToken");
     setToken(null);
-    navigate("/login");
+    // navigate("/login");
+    window.location.href = "/";
   }
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container">
           <Link className="navbar-brand" aria-current="page" to="/">
-            Sara7a App
+            <img src={logo} alt="logo" className="w-25" />
           </Link>
           <button
             className="navbar-toggler"
@@ -42,7 +44,7 @@ export default function Navbar() {
                       to="/profile"
                     >
                       Profile
-                      <div className="badge text-bg-danger">{msgsCount}</div>
+                      <div className="badge text-bg-danger">{counter}</div>
                     </Link>
                   </li>
 

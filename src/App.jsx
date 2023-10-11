@@ -27,6 +27,10 @@ function App() {
       element: <Layout />,
       children: [
         {
+          path: "",
+          element: <Register />,
+        },
+        {
           path: "register",
           element: <Register />,
         },
