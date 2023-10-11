@@ -32,7 +32,7 @@ export default function Navbar() {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
               {token ? (
                 <>
                   <li className="nav-item">
@@ -45,6 +45,7 @@ export default function Navbar() {
                       <div className="badge text-bg-danger">{msgsCount}</div>
                     </Link>
                   </li>
+
                   <button className="btn btn-dark" onClick={logout}>
                     Logout
                   </button>

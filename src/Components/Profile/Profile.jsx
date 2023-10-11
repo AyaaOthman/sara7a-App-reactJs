@@ -5,6 +5,8 @@ import axios from "axios";
 import { tokenContext } from "../../Context/tokenContext";
 import jwtDecode from "jwt-decode";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 export default function Profile() {
   let { token } = useContext(tokenContext);
@@ -23,13 +25,13 @@ export default function Profile() {
         setAllMessages(data.data.allMessages);
       })
   );
-
   function getUserId() {
     let decodedUserId = jwtDecode(localStorage.getItem("userToken"));
     console.log(decodedUserId);
     setUserName(decodedUserId.name);
     setUserId(decodedUserId);
   }
+
   // async function getMessages() {
   //   await axios
   //     .get("https://sara7aiti.onrender.com/api/v1/message", {
@@ -42,6 +44,10 @@ export default function Profile() {
   //       setAllMessages(data.data.allMessages);
   //     });
   // }
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     // getMessages();
@@ -67,15 +73,26 @@ export default function Profile() {
               <img src={avatarImg} className="avatar " alt />
             </a>
             <h3 className="py-2">{userName}</h3>
-
-            <button
-              data-toggle="modal"
-              data-target="#share"
-              className="btn btn-dark share "
-            >
+            <Button variant="primary" onClick={handleShow}>
               <i className="fas fa-share-alt" /> Share Profile
-            </button>
+            </Button>
           </div>
+          {/* //modal */}
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              share this link with your friends: {window.location.origin}
+              /message/
+              {userId.id}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <div className="row">
             {allAddedMsgs.length === 0 ? (
               <div className="col-md-12">
