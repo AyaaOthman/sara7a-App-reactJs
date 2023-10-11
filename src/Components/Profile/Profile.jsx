@@ -16,6 +16,7 @@ export default function Profile() {
   const [allAddedMsgs, setAllMessages] = useState([]);
   const [userName, setUserName] = useState();
   const [userId, setUserId] = useState();
+  const invitLink = `${window.location.origin}/message/${userId?.id}`;
   const { isLoading, error, data, isFetching } = useQuery("repoData", () =>
     axios
       .get("https://sara7aiti.onrender.com/api/v1/message", {
@@ -52,6 +53,7 @@ export default function Profile() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleCopy = () => navigator.clipboard.writeText(invitLink);
 
   useEffect(() => {
     // getMessages();
@@ -91,13 +93,14 @@ export default function Profile() {
               <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              share this link with your friends: {window.location.origin}
-              /message/
-              {userId.id}
+              share this link with your friends:{invitLink}
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Close
+              </Button>
+              <Button variant="secondary" onClick={handleCopy}>
+                Copy
               </Button>
             </Modal.Footer>
           </Modal>
