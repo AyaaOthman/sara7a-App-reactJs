@@ -19,9 +19,12 @@ export default function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container">
-          <Link className="navbar-brand" aria-current="page" to="/">
-            <img src={logo} alt="logo" className="w-25" />
-          </Link>
+          <img
+            src={logo}
+            alt="logo"
+            className=" navbar-brand"
+            width={"100px"}
+          />
           <button
             className="navbar-toggler"
             type="button"
