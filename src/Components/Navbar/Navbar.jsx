@@ -1,20 +1,24 @@
-import React, { useContext } from "react";
-import styles from "./Navbar.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { CounterContext } from "../../Context/counter";
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { tokenContext } from "../../Context/tokenContext";
 import logo from "../../img/logo300.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllMsgs } from "../../redux/msgsSlice";
 
 export default function Navbar() {
-  const { counter } = useContext(CounterContext);
   const { token, setToken } = useContext(tokenContext);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   function logout() {
     localStorage.removeItem("userToken");
     setToken(null);
-    // navigate("/login");
     window.location.href = "/";
   }
+  useEffect(() => {
+    dispatch(getAllMsgs());
+  }, []);
+  const msgs = useSelector((state) => state.counter.msgs);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -47,7 +51,7 @@ export default function Navbar() {
                       to="/profile"
                     >
                       Profile
-                      <div className="badge text-bg-danger">{counter}</div>
+                      <div className="badge text-bg-danger">{msgs?.length}</div>
                     </Link>
                   </li>
 
